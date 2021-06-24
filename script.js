@@ -1,0 +1,81 @@
+import { quizDataJp } from './quiz_data_jp.js';
+
+// 質問文
+const questionElm = document.getElementById('question');
+
+// 選択肢
+const a_text = document.getElementById('a-text');
+const b_text = document.getElementById('b-text');
+const c_text = document.getElementById('c-text');
+const d_text = document.getElementById('d-text');
+
+// 送信ボタン
+const submitBtn = document.getElementById('submit');
+
+// 現在の問題
+let currentQuiz = 0;
+
+// 現在のスコア
+let score = 0;
+
+
+loadQuiz();
+
+function loadQuiz() {
+  // 問題を取得
+  const currentQuizData = quizDataJp[currentQuiz];
+
+  // 質問文を表示
+  questionElm.innerText = currentQuizData.question;
+
+  // 選択肢を表示
+  a_text.innerText = currentQuizData.a;
+  b_text.innerText = currentQuizData.b;
+  c_text.innerText = currentQuizData.c;
+  d_text.innerText = currentQuizData.d;
+}
+
+function getAnswered() {
+
+  // 選択したボタンのvalueを返す
+  return document.quizForm.answer.value;
+}
+
+function showResults() {
+
+}
+
+
+submitBtn.addEventListener('click', (event) => {
+  event.preventDefault();
+
+  // 回答を取得
+  const answer = getAnswered();
+
+  // 回答している
+  if(answer) {
+
+    // 正誤判定
+    if (answer === quizDataJp[currentQuiz].correct) {
+      // show results
+      
+      score++;
+    }
+
+    // 次の問題へ進む
+    currentQuiz++;
+
+    // ラジオボタンの選択を解除する
+    document.getElementById(answer).checked = false;
+
+    // まだ問題が残っている
+    if (currentQuiz < quizDataJp.length) {
+      // 次の問題を読み込む
+      loadQuiz();
+
+    // 全ての問題に回答した
+    } else {
+      alert('You finished! Amazing!')
+    }
+  }
+});
