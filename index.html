@@ -8,8 +8,8 @@
   <script type="module" src="script.js" defer></script>
 </head>
 <body>
-  <div class="quiz-container">
-    <div class="quiz-header">
+  <div id="quiz-container">
+    <div id="quiz-header">
       <h2 id="question">Question text</h2>
       
       <form id="quiz-form" name="quizForm">
@@ -36,7 +36,12 @@
     
     <button id="submit">回答する</button>
 
-    
+    <div id="results-container">
+      <div id="results-header">
+        <h2 id="results"></h2>
+        <button id="next-quiz">次の問題へ</button>
+      </div>
+    </div>
   </div>
 </body>
 </html>

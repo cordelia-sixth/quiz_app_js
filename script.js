@@ -18,6 +18,13 @@ let currentQuiz = 0;
 // 現在のスコア
 let score = 0;
 
+// 次の問題ボタン
+const nextQuizBtn = document.getElementById('next-quiz');
+
+// 
+const quizHeaderElm = document.getElementById('quiz-header');
+const resultsConElm = document.getElementById('results-container');
+const resultsElm = document.getElementById('results');
 
 loadQuiz();
 
@@ -41,12 +48,29 @@ function getAnswered() {
   return document.quizForm.answer.value;
 }
 
-function showResults() {
+function showResults(results) {
+  quizHeaderElm.style.display = 'none';
+  submitBtn.style.display = 'none';
+  resultsConElm.style.display = 'block';
+  resultsElm.innerText = results;
+}
 
+function showQuiz() {
+  quizHeaderElm.style.display = 'block';
+  submitBtn.style.display = 'block';
+  resultsConElm.style.display = 'none';
+}
+
+function checkScore() {
+  if (score == quizDataJp.length) {
+    return '全問正解！おめでとう！';
+  } else {
+    return '曲を聞いてもう一回挑戦しよう！';
+  }
 }
 
 
-submitBtn.addEventListener('click', (event) => {
+submitBtn.addEventListener('click', event => {
   event.preventDefault();
 
   // 回答を取得
@@ -57,25 +81,35 @@ submitBtn.addEventListener('click', (event) => {
 
     // 正誤判定
     if (answer === quizDataJp[currentQuiz].correct) {
-      // show results
+      showResults('正解！');
       
       score++;
+      console.log(score);
+    } else {
+      showResults('残念...');
     }
-
-    // 次の問題へ進む
-    currentQuiz++;
 
     // ラジオボタンの選択を解除する
     document.getElementById(answer).checked = false;
+  }
+});
 
-    // まだ問題が残っている
-    if (currentQuiz < quizDataJp.length) {
-      // 次の問題を読み込む
-      loadQuiz();
+nextQuizBtn.addEventListener('click', event => {
+  event.preventDefault();
 
-    // 全ての問題に回答した
-    } else {
-      alert('You finished! Amazing!')
-    }
+  // 次の問題へ進む
+  currentQuiz++;
+
+  // まだ問題が残っている
+  if (currentQuiz < quizDataJp.length) {
+    // 次の問題を読み込む
+    loadQuiz();
+
+    showQuiz();
+
+  // 全ての問題に回答した
+  } else {
+    alert(checkScore());
+    window.location.reload();
   }
 });
